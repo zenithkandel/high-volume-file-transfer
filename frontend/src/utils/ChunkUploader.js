@@ -145,31 +145,18 @@ class ChunkUploader {
         const chunkData = this.file.slice(start, end);
 
         try {
-            // 1. Get Presigned URL
-            const urlRes = await fetch('http://localhost:3000/api/v1/upload/get-chunk-url', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fileId: this.fileId, partNumber })
-            });
-            const { url } = await urlRes.json();
+// Use FormData mapping for fastify-multipart
+      const formData = new FormData();
+      formData.append('fileId', this.fileId);
+      formData.append('partNumber', partNumber);
+      formData.append('chunk', chunkData, this.file.name);
 
-            // 2. Upload directly to S3 Bucket using PUT
-            const s3Res = await fetch(url, {
-                method: 'PUT',
-                body: chunkData,
-                // iOS requires careful memory handling, fetch buffers the chunk automatically because we sliced it
-            });
+      const res = await fetch('http://localhost:3000/api/v1/upload/chunk', {
+        method: 'POST',
+        body: formData
+      });
 
-            if (!s3Res.ok) throw new Error(`S3 PUT failed: ${s3Res.status}`);
-
-            const eTag = s3Res.headers.get('ETag'); // Important for completion step
-
-            // 3. Notify backend of successful chunk
-            await fetch('http://localhost:3000/api/v1/upload/save-chunk', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fileId: this.fileId, partNumber, eTag: eTag || '"mock-etag"' })  // mock for non-CORS
-            });
+      if (!res.ok) throw new Error(`Upload POST failed: ${res.status}`);
 
             this.uploadedChunks.add(partNumber);
             this.saveState();

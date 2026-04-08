@@ -1,113 +1,118 @@
-const s3 = require('../services/s3Service');
+const fs = require('fs');
+const path = require('path');
+const { pipeline } = require('stream/promises');
 const { v4: uuidv4 } = require('uuid');
-// In a real app we would use Postgres / TypeORM here
-const mockDb = new Map();
+const { readDb, writeDb } = require('../utils/db');
 
 async function uploadRoutes(fastify, options) {
+  
+  const getTempPath = () => path.join(path.resolve(process.env.STORAGE_PATH || './uploads'), 'temp');
+  
+  fastify.post('/init', async (request, reply) => {
+    const { filename, mimeType, size, chunksCount } = request.body;
+    
+    const fileId = uuidv4();
+    const db = readDb();
+    
+    db.files[fileId] = {
+      id: fileId,
+      filename,
+      mimeType,
+      size,
+      chunksCount,
+      uploadedChunks: [],
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+    
+    writeDb(db);
+    
+    const fileTempDir = path.join(getTempPath(), fileId);
+    if (!fs.existsSync(fileTempDir)) {
+      fs.mkdirSync(fileTempDir, { recursive: true });
+    }
+    
+    reply.send({ fileId });
+  });
 
-    // 1. Initialize Upload
-    fastify.post('/init', async (request, reply) => {
-        const { filename, mimeType, size, chunksCount } = request.body;
+  // We use multipart for chunk uploads now
+  fastify.post('/chunk', async (request, reply) => {
+    const data = await request.file();
+    if (!data) {
+      reply.code(400).send({ error: 'No file chunk provided' });
+      return;
+    }
 
-        // Validate size against rate limits / quotas here
-        if (size > 10737418240) { // >10GB
-            reply.code(413).send({ error: 'Payload Too Large. Max size 10GB.' });
-            return;
-        }
+    const fileId = data.fields.fileId.value;
+    const partNumber = parseInt(data.fields.partNumber.value, 10);
 
-        const fileId = uuidv4();
-        const objectKey = `uploads/${fileId}/${filename}`;
+    const db = readDb();
+    const fileRecord = db.files[fileId];
+    
+    if (!fileRecord) {
+      reply.code(404).send({ error: 'File upload not found' });
+      return;
+    }
 
-        try {
-            const uploadId = await s3.initMultipartUpload(objectKey, mimeType);
+    const chunkPath = path.join(getTempPath(), fileId, partNumber.toString());
+    
+    // Pipe multipart stream directly to disk
+    await pipeline(data.file, fs.createWriteStream(chunkPath));
 
-            // Store pending file in DB
-            mockDb.set(fileId, {
-                objectKey,
-                uploadId,
-                size,
-                chunksCount,
-                parts: [],
-                status: 'pending', // pending, uploading, complete
-            });
+    if (!fileRecord.uploadedChunks.includes(partNumber)) {
+      fileRecord.uploadedChunks.push(partNumber);
+      fileRecord.status = 'uploading';
+      writeDb(db);
+    }
 
-            reply.send({ fileId, uploadId, key: objectKey });
-        } catch (err) {
-            request.log.error(err);
-            reply.code(500).send({ error: 'Failed to init multipart upload' });
-        }
-    });
+    reply.send({ success: true, uploadedChunks: fileRecord.uploadedChunks.length });
+  });
 
-    // 2. Get Presigned URL for Chunk
-    fastify.post('/get-chunk-url', async (request, reply) => {
-        const { fileId, partNumber } = request.body;
+  fastify.post('/complete', async (request, reply) => {
+    const { fileId } = request.body;
+    const db = readDb();
+    const fileRecord = db.files[fileId];
+    
+    if (!fileRecord) {
+      reply.code(404).send({ error: 'Upload not found' });
+      return;
+    }
 
-        const fileRecord = mockDb.get(fileId);
-        if (!fileRecord || fileRecord.status === 'complete') {
-            reply.code(404).send({ error: 'Upload not found or already completed.' });
-            return;
-        }
+    if (fileRecord.uploadedChunks.length !== fileRecord.chunksCount) {
+      reply.code(400).send({ error: 'Missing chunks, cannot complete.', partsFound: fileRecord.uploadedChunks.length, expected: fileRecord.chunksCount });
+      return;
+    }
 
-        try {
-            const url = await s3.getPresignedPartUrl(fileRecord.objectKey, fileRecord.uploadId, partNumber);
-            reply.send({ url });
-        } catch (err) {
-            request.log.error(err);
-            reply.code(500).send({ error: 'Failed to generate part url' });
-        }
-    });
+    const finalDir = path.resolve(process.env.STORAGE_PATH || './uploads');
+    const ext = path.extname(fileRecord.filename);
+    const base = path.basename(fileRecord.filename, ext);
+    const finalName = base + '_' + fileId.substr(0, 5) + ext;
+    const finalPath = path.join(finalDir, finalName);
+    
+    const finalStream = fs.createWriteStream(finalPath);
+    const fileTempDir = path.join(getTempPath(), fileId);
 
-    // 3. Optional: Store Chunk ETag on successful PUT (handled mostly by frontend sending final list, but good for resuming)
-    fastify.post('/save-chunk', async (request, reply) => {
-        const { fileId, partNumber, eTag } = request.body;
-        const fileRecord = mockDb.get(fileId);
-
-        if (fileRecord) {
-            fileRecord.parts.push({ PartNumber: partNumber, ETag: eTag });
-            fileRecord.status = 'uploading';
-            mockDb.set(fileId, fileRecord);
-            reply.send({ success: true, uploadedChunks: fileRecord.parts.length });
-        } else {
-            reply.code(404).send({ error: 'File id not found' });
-        }
-    });
-
-    // 4. Complete Upload (Merge chunks)
-    fastify.post('/complete', async (request, reply) => {
-        const { fileId } = request.body;
-        const fileRecord = mockDb.get(fileId);
-
-        if (!fileRecord) {
-            reply.code(404).send({ error: 'Upload not found' });
-            return;
-        }
-
-        // Sort parts to ensure S3 processes them correctly
-        const sortedParts = fileRecord.parts.sort((a, b) => a.PartNumber - b.PartNumber);
-
-        // Check if we have all chunks
-        if (sortedParts.length !== fileRecord.chunksCount) {
-            reply.code(400).send({ error: 'Missing chunks. Please retry failed chunks.', partsFound: sortedParts.length, expected: fileRecord.chunksCount });
-            return;
-        }
-
-        try {
-            // Tell S3 to merge all the uploaded parts
-            await s3.completeMultipartUpload(fileRecord.objectKey, fileRecord.uploadId, sortedParts);
-
-            fileRecord.status = 'complete';
-            mockDb.set(fileId, fileRecord);
-
-            // Trigger background worker via BullMQ queue (Virus Scan, Thumbnails)
-            // queue.add('post-process', { fileId, key: fileRecord.objectKey });
-
-            reply.send({ success: true, fileId, key: fileRecord.objectKey });
-        } catch (err) {
-            request.log.error(err);
-            // Implement fallback / abort logic or wait for retry
-            reply.code(500).send({ error: 'Failed to complete multipart upload S3 side' });
-        }
-    });
+    try {
+      // Concat all chunks in order
+      for (let i = 1; i <= fileRecord.chunksCount; i++) {
+        const chunkPath = path.join(fileTempDir, i.toString());
+        const chunkStream = fs.createReadStream(chunkPath);
+        await pipeline(chunkStream, finalStream, { end: false });
+      }
+      
+      finalStream.end();
+      fs.rmSync(fileTempDir, { recursive: true, force: true });
+      
+      fileRecord.status = 'complete';
+      fileRecord.finalPath = finalPath;
+      writeDb(db);
+      
+      reply.send({ success: true, fileId, key: finalName });
+    } catch (err) {
+      request.log.error(err);
+      reply.code(500).send({ error: 'Failed merging chunks ' });
+    }
+  });
 }
 
 module.exports = uploadRoutes;

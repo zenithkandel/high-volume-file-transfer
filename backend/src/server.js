@@ -14,13 +14,13 @@ if (!fs.existsSync(tempPath)) fs.mkdirSync(tempPath, { recursive: true });
 
 initDb();
 
-const server = Fastify({ 
+const server = Fastify({
   logger: true,
-  bodyLimit: 104857600 
+  bodyLimit: 104857600
 });
 
 server.register(cors, {
-  origin: '*', 
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
