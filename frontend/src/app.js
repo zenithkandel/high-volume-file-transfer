@@ -21,7 +21,7 @@ fileInput.addEventListener('change', e => handleFiles(e.target.files));
 
 function handleFiles(files) {
     for (let file of files) {
-        const id = Date.now() + Math.random();
+        const id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
         const uploader = new ChunkUploader(file, {
             chunkSize: 5 * 1024 * 1024,
             concurrency: 3,
@@ -47,7 +47,7 @@ function renderFileQueue() {
     uploadQueue.forEach(item => {
         const div = document.createElement('div');
         div.className = 'file-item';
-        const safeId = Math.floor(item.id);
+        const safeId = item.id;
         div.id = 'container-' + safeId;
 
         let badgeClass = 'staged';
