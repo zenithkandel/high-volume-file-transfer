@@ -3,12 +3,14 @@ const checkAll = document.getElementById('checkAll');
 const btnDownloadZip = document.getElementById('btnDownloadZip');
 const btnDeleteSelected = document.getElementById('btnDeleteSelected');
 
+const API_BASE = window.location.pathname.replace(/\/[^/]*\.html$/, '').replace(/\/$/, '') + '/api/v1/upload';
+
 let files = [];
 
 async function loadFiles() {
     tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #888;">Scanning drive...</td></tr>';
     try {
-        const res = await fetch('/api/v1/upload/list');
+        const res = await fetch(`${API_BASE}/list`);
         files = await res.json();
         renderFiles();
     } catch (err) {
