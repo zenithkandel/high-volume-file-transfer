@@ -5,6 +5,7 @@ const cors = require('@fastify/cors');
 const multipart = require('@fastify/multipart');
 const uploadRoutes = require('./routes/upload');
 const { initDb } = require('./utils/db');
+const fastifyStatic = require('@fastify/static');
 
 // Ensure local directories exist
 const storagePath = path.resolve(process.env.STORAGE_PATH || './uploads');
@@ -22,6 +23,11 @@ const server = Fastify({
 server.register(cors, {
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE']
+});
+
+server.register(fastifyStatic, {
+  root: path.join(__dirname, '../../frontend'),
+  prefix: '/'
 });
 
 server.register(multipart, { limits: { fileSize: 50 * 1024 * 1024 } }); // 50MB chunk limit
