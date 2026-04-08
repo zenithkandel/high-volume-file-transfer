@@ -1,5 +1,14 @@
 const fs = require('fs');
 const path = require('path');
+
+// Global error handlers so Passenger actually points out what breaks during startup
+process.on('uncaughtException', (err) => {
+  console.error("FATAL UNCAUGHT EXCEPTION: ", err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error("UNHANDLED REJECTION: ", reason);
+});
+
 require('dotenv').config({ path: path.join(__dirname, '../../.env') }); // Load optional parent directory .env
 require('dotenv').config(); // Fallback to local ./backend/.env if it exists
 
@@ -28,18 +37,33 @@ server.register(cors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
+// A hook to log EXACTLY what URL and path Fastify is seeing
+server.addHook('onRequest', (request, reply, done) => {
+  server.log.info(`INCOMING REQUEST: ${request.method} ${request.url} (raw: ${request.raw.url})`);
+  done();
+});
+
+// Force basePath to '/jas/' because cPanel might have NODE_ENV set to 'development' instead of 'production'
+const basePath = '/jas/';
+
 server.register(fastifyStatic, {
   root: path.join(__dirname, '../../frontend'),
-  prefix: '/'
+  prefix: basePath,
+  list: true // Optional: helps debug if files are there
 });
 
-server.register(multipart, { limits: { fileSize: 50 * 1024 * 1024 } }); // 50MB chunk limit
+server.register(uploadRoutes, { prefix: `${basePath}api/v1/upload`.replace('//', '/') });
 
-server.register(uploadRoutes, { prefix: '/api/v1/upload' });
-
-server.get('/health', async (request, reply) => {
+server.get(`${basePath}health`.replace('//', '/'), async (request, reply) => {
   return { status: 'ok', time: new Date() };
 });
+
+// Catch-all to redirect root to the base path if needed
+if (basePath !== '/') {
+  server.get('/', async (request, reply) => {
+    reply.redirect(basePath);
+  });
+}
 
 const start = async () => {
   try {
