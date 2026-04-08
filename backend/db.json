@@ -13,6 +13,156 @@
       "status": "complete",
       "createdAt": "2026-04-08T11:44:40.681Z",
       "finalPath": "C:\\xampp\\htdocs\\codes\\high-volume-file-transfer\\backend\\uploads\\wabt-1.0.40-windows-x64.tar_24ef3.gz"
+    },
+    "2935ec0a-a37f-4b3f-be54-8b194b306720": {
+      "id": "2935ec0a-a37f-4b3f-be54-8b194b306720",
+      "filename": "[image] - 4537873.jpg",
+      "mimeType": "image/jpeg",
+      "size": 93764,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:28.978Z"
+    },
+    "4de15c27-c0df-47f6-b69d-ff0e3fdf68e0": {
+      "id": "4de15c27-c0df-47f6-b69d-ff0e3fdf68e0",
+      "filename": "[image] - 8915864.jpg",
+      "mimeType": "image/jpeg",
+      "size": 87504,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:28.990Z"
+    },
+    "51567ac9-b34a-4fa0-8b18-aab58abd514a": {
+      "id": "51567ac9-b34a-4fa0-8b18-aab58abd514a",
+      "filename": "[image] - 5521930.jpg",
+      "mimeType": "image/jpeg",
+      "size": 85159,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:28.998Z"
+    },
+    "74a9cab0-71cc-46df-8038-6cc1ceeb1813": {
+      "id": "74a9cab0-71cc-46df-8038-6cc1ceeb1813",
+      "filename": "[image] - 4519362.jpg",
+      "mimeType": "image/jpeg",
+      "size": 88859,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.007Z"
+    },
+    "056d04db-2463-4888-a92a-48de387553e8": {
+      "id": "056d04db-2463-4888-a92a-48de387553e8",
+      "filename": "[image] - 4026913.jpg",
+      "mimeType": "image/jpeg",
+      "size": 85272,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.015Z"
+    },
+    "22602f6e-6a4e-48f4-9dcb-e6f4e16a6077": {
+      "id": "22602f6e-6a4e-48f4-9dcb-e6f4e16a6077",
+      "filename": "[image] - 7868220.jpg",
+      "mimeType": "image/jpeg",
+      "size": 71027,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.020Z"
+    },
+    "52699170-553f-44fe-9171-0f3f25569d3c": {
+      "id": "52699170-553f-44fe-9171-0f3f25569d3c",
+      "filename": "[image] - 1232737.jpg",
+      "mimeType": "image/jpeg",
+      "size": 73214,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.027Z"
+    },
+    "b2461489-c5e8-4ee5-89b7-c393edeb35ed": {
+      "id": "b2461489-c5e8-4ee5-89b7-c393edeb35ed",
+      "filename": "[image] - 6670783.jpg",
+      "mimeType": "image/jpeg",
+      "size": 86022,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.034Z"
+    },
+    "846a3f1b-66d1-4e3d-817e-bce9999b8a31": {
+      "id": "846a3f1b-66d1-4e3d-817e-bce9999b8a31",
+      "filename": "[image] - 113334.jpg",
+      "mimeType": "image/jpeg",
+      "size": 109359,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.042Z"
+    },
+    "e8ed8c12-b8bf-40ab-bece-ed9983fdcdfb": {
+      "id": "e8ed8c12-b8bf-40ab-bece-ed9983fdcdfb",
+      "filename": "[image] - 9693602.jpg",
+      "mimeType": "image/jpeg",
+      "size": 74037,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T11:59:29.049Z"
+    },
+    "1a52e308-9318-4bcb-b14f-c8865ed5686e": {
+      "id": "1a52e308-9318-4bcb-b14f-c8865ed5686e",
+      "filename": "[image] - 1375106.jpg",
+      "mimeType": "image/jpeg",
+      "size": 57445,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T11:59:29.056Z"
+    },
+    "746b5acd-7fde-484c-88c0-e536a41c5d64": {
+      "id": "746b5acd-7fde-484c-88c0-e536a41c5d64",
+      "filename": "[image] - 6894907.jpg",
+      "mimeType": "image/jpeg",
+      "size": 61254,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T11:59:29.063Z"
+    },
+    "2183b55f-1b7e-4677-89ee-1ec6a14cf17b": {
+      "id": "2183b55f-1b7e-4677-89ee-1ec6a14cf17b",
+      "filename": "[image] - 3743668.jpg",
+      "mimeType": "image/jpeg",
+      "size": 73844,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T11:59:29.070Z"
     }
   }
 }

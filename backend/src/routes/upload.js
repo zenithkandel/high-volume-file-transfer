@@ -55,7 +55,7 @@ async function uploadRoutes(fastify, options) {
     });
 
     fastify.post('/chunk', async (request, reply) => {
-        const data = await request.file();
+        const data = await request.file({ limits: { fileSize: 100 * 1024 * 1024 } });
         if (!data) return reply.code(400).send({ error: 'No chunk' });
         const fileId = data.fields.fileId.value;
         const partNumber = parseInt(data.fields.partNumber.value, 10);

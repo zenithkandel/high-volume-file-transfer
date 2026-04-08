@@ -80,10 +80,12 @@ class ChunkUploader {
             await this.initBackend();
         }
 
-        // Populate queue with un-uploaded chunk indexes
-        for (let i = 0; i < this.totalChunks; i++) {
-            if (!this.uploadedChunks.has(i + 1)) {
-                this.queue.push(i + 1);
+        // Only populate queue if empty
+        if (this.queue.length === 0) {
+            for (let i = 0; i < this.totalChunks; i++) {
+                if (!this.uploadedChunks.has(i + 1)) {
+                    this.queue.push(i + 1);
+                }
             }
         }
 
@@ -130,9 +132,9 @@ class ChunkUploader {
         // Finishing condition
         if (this.activeWorkers === 0 && this.queue.length === 0 && this.status === 'uploading') {
             if (this.uploadedChunks.size === this.totalChunks) {
-                await this.completeUpload();
+                this.completeUpload();
             } else {
-                // We somehow didn't complete all chunks, but queue is empty? Wait for retry worker or error out
+                // Wait for ongoing chunks
             }
         }
     }
