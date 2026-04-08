@@ -314,6 +314,39 @@
       ],
       "status": "uploading",
       "createdAt": "2026-04-08T12:06:03.573Z"
+    },
+    "857844b1-0d5a-4717-a4b4-8bcc70224e6e": {
+      "id": "857844b1-0d5a-4717-a4b4-8bcc70224e6e",
+      "filename": "zenith-logs-1775288425592.json",
+      "mimeType": "application/json",
+      "size": 347447,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:08:50.617Z"
+    },
+    "c3db0638-e9ed-410e-bcd0-bf6c9119a97b": {
+      "id": "c3db0638-e9ed-410e-bcd0-bf6c9119a97b",
+      "filename": "zenith-logs-1775287997393.json",
+      "mimeType": "application/json",
+      "size": 447443,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "complete",
+      "createdAt": "2026-04-08T12:08:50.631Z",
+      "finalPath": "C:\\xampp\\htdocs\\codes\\high-volume-file-transfer\\backend\\uploads\\zenith-logs-1775287997393_c3db0.json"
+    },
+    "a1efd102-b0bb-4740-bb86-a152e163d85f": {
+      "id": "a1efd102-b0bb-4740-bb86-a152e163d85f",
+      "filename": "zenith-logs-1775286659754.json",
+      "mimeType": "application/json",
+      "size": 287485,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:08:50.662Z"
     }
   }
 }
