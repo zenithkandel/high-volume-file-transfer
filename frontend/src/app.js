@@ -132,7 +132,8 @@ function checkAllComplete() {
     }
 }
 
-btnStartAll.addEventListener('click', () => {
+btnStartAll.addEventListener('click', (e) => {
+    e.preventDefault(); // prevent any form submission if it ever gets wrapped in one
     btnStartAll.disabled = true;
     btnStartAll.innerText = 'UPLOADING...';
 

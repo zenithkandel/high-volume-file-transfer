@@ -1,0 +1,1 @@
+{ "liveServer.settings.ignoreFiles": [".vscode/**", "**/*.json", "uploads/**", "backend/db.json"] }
