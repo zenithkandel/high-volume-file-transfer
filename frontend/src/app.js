@@ -20,43 +20,43 @@ dropzone.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', e => handleFiles(e.target.files));
 
 function handleFiles(files) {
-  for (let file of files) {
-    const id = Date.now() + Math.random();
-    const uploader = new ChunkUploader(file, {
-      chunkSize: 5 * 1024 * 1024,
-      concurrency: 3,
-      onProgress: (percent) => updateProgress(id, percent),
-      onError: (err) => updateError(id, err),
-      onComplete: (key) => markComplete(id, key)
-    });
-    uploadQueue.push({ id, file, uploader, status: 'staged', percent: 0 });
-  }
+    for (let file of files) {
+        const id = Date.now() + Math.random();
+        const uploader = new ChunkUploader(file, {
+            chunkSize: 5 * 1024 * 1024,
+            concurrency: 3,
+            onProgress: (percent) => updateProgress(id, percent),
+            onError: (err) => updateError(id, err),
+            onComplete: (key) => markComplete(id, key)
+        });
+        uploadQueue.push({ id, file, uploader, status: 'staged', percent: 0 });
+    }
 
-  if (uploadQueue.length > 0) {
-    actionContainer.style.display = 'flex';
-    btnStartAll.disabled = false;
-    btnStartAll.innerText = 'START UPLOAD';
-    globalSuccess.style.display = 'none'; // hide success msg if present
-  }
+    if (uploadQueue.length > 0) {
+        actionContainer.style.display = 'flex';
+        btnStartAll.disabled = false;
+        btnStartAll.innerText = 'START UPLOAD';
+        globalSuccess.style.display = 'none'; // hide success msg if present
+    }
 
-  renderFileQueue();
+    renderFileQueue();
 }
 
 function renderFileQueue() {
-  fileList.innerHTML = '';
-  uploadQueue.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'file-item';
-    const safeId = Math.floor(item.id);
-    div.id = 'container-' + safeId;
+    fileList.innerHTML = '';
+    uploadQueue.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        const safeId = Math.floor(item.id);
+        div.id = 'container-' + safeId;
 
-    let badgeClass = 'staged';
-    let badgeText = 'Ready';
-    if (item.status === 'uploading') { badgeClass = 'uploading'; badgeText = 'Uploading...'; }
-    else if (item.status === 'complete') { badgeClass = 'complete'; badgeText = 'Complete'; }
-    else if (item.status === 'error') { badgeClass = 'error'; badgeText = 'Error'; }
+        let badgeClass = 'staged';
+        let badgeText = 'Ready';
+        if (item.status === 'uploading') { badgeClass = 'uploading'; badgeText = 'Uploading...'; }
+        else if (item.status === 'complete') { badgeClass = 'complete'; badgeText = 'Complete'; }
+        else if (item.status === 'error') { badgeClass = 'error'; badgeText = 'Error'; }
 
-    div.innerHTML = `
+        div.innerHTML = `
       <div class="file-header">
         <div class="file-info">
           <span class="file-name" title="${item.file.name}">${item.file.name}</span>
@@ -69,76 +69,76 @@ function renderFileQueue() {
         <span class="progress-text" id="pct-${safeId}">${item.percent || 0}%</span>
       </div>
     `;
-    fileList.appendChild(div);
-  });
+        fileList.appendChild(div);
+    });
 }
 
 function updateProgress(id, pct) {
-  const safeId = Math.floor(id);
-  const idx = uploadQueue.findIndex(u => u.id === id);
-  if(idx !== -1) uploadQueue[idx].percent = pct;
+    const safeId = Math.floor(id);
+    const idx = uploadQueue.findIndex(u => u.id === id);
+    if (idx !== -1) uploadQueue[idx].percent = pct;
 
-  const fill = document.getElementById('prog-' + safeId);
-  const text = document.getElementById('pct-' + safeId);
-  const badge = document.getElementById('badge-' + safeId);
-  
-  if (fill) fill.style.width = pct + '%';
-  if (text) text.innerText = pct + '%';
-  if (badge && badge.innerText !== 'Error') {
-    badge.innerText = 'Uploading...';
-    badge.className = 'status-badge uploading';
-  }
+    const fill = document.getElementById('prog-' + safeId);
+    const text = document.getElementById('pct-' + safeId);
+    const badge = document.getElementById('badge-' + safeId);
+
+    if (fill) fill.style.width = pct + '%';
+    if (text) text.innerText = pct + '%';
+    if (badge && badge.innerText !== 'Error') {
+        badge.innerText = 'Uploading...';
+        badge.className = 'status-badge uploading';
+    }
 }
 
 function updateError(id, err) {
-  const safeId = Math.floor(id);
-  const badge = document.getElementById('badge-' + safeId);
-  if (badge) { 
-    badge.innerText = 'Error'; 
-    badge.className = 'status-badge error'; 
-  }
-  const idx = uploadQueue.findIndex(u => u.id === id);
-  if(idx !== -1) uploadQueue[idx].status = 'error';
+    const safeId = Math.floor(id);
+    const badge = document.getElementById('badge-' + safeId);
+    if (badge) {
+        badge.innerText = 'Error';
+        badge.className = 'status-badge error';
+    }
+    const idx = uploadQueue.findIndex(u => u.id === id);
+    if (idx !== -1) uploadQueue[idx].status = 'error';
 }
 
 function markComplete(id, key) {
-  const safeId = Math.floor(id);
-  const badge = document.getElementById('badge-' + safeId);
-  const fill = document.getElementById('prog-' + safeId);
-  const text = document.getElementById('pct-' + safeId);
-  
-  if (badge) { 
-    badge.innerText = 'Complete'; 
-    badge.className = 'status-badge complete'; 
-  }
-  if (fill) fill.style.width = '100%';
-  if (text) text.innerText = '100%';
-  
-  const idx = uploadQueue.findIndex(u => u.id === id);
-  if(idx !== -1) uploadQueue[idx].status = 'complete';
-  checkAllComplete();
+    const safeId = Math.floor(id);
+    const badge = document.getElementById('badge-' + safeId);
+    const fill = document.getElementById('prog-' + safeId);
+    const text = document.getElementById('pct-' + safeId);
+
+    if (badge) {
+        badge.innerText = 'Complete';
+        badge.className = 'status-badge complete';
+    }
+    if (fill) fill.style.width = '100%';
+    if (text) text.innerText = '100%';
+
+    const idx = uploadQueue.findIndex(u => u.id === id);
+    if (idx !== -1) uploadQueue[idx].status = 'complete';
+    checkAllComplete();
 }
 
 function checkAllComplete() {
-  if (uploadQueue.length > 0 && uploadQueue.every(u => u.status === 'complete' || u.status === 'error')) {
-    btnStartAll.style.display = 'none'; // hide the button
-    
-    // If everything is completely successful
-    if (uploadQueue.every(u => u.status === 'complete')) {
-      globalSuccess.style.display = 'block'; 
-      actionContainer.style.display = 'none';
-      dropzone.style.display = 'none'; // Optional: hide dropzone to emphasize completion
+    if (uploadQueue.length > 0 && uploadQueue.every(u => u.status === 'complete' || u.status === 'error')) {
+        btnStartAll.style.display = 'none'; // hide the button
+
+        // If everything is completely successful
+        if (uploadQueue.every(u => u.status === 'complete')) {
+            globalSuccess.style.display = 'block';
+            actionContainer.style.display = 'none';
+            dropzone.style.display = 'none'; // Optional: hide dropzone to emphasize completion
+        }
     }
-  }
 }
 
 btnStartAll.addEventListener('click', () => {
-  btnStartAll.disabled = true;
-  btnStartAll.innerText = 'UPLOADING...';
-  
-  uploadQueue.filter(u => u.status === 'staged').forEach(u => {
-    u.status = 'uploading';
-    updateProgress(u.id, 0); // Trigger frontend state shift
-    u.uploader.start();
-  });
+    btnStartAll.disabled = true;
+    btnStartAll.innerText = 'UPLOADING...';
+
+    uploadQueue.filter(u => u.status === 'staged').forEach(u => {
+        u.status = 'uploading';
+        updateProgress(u.id, 0); // Trigger frontend state shift
+        u.uploader.start();
+    });
 });

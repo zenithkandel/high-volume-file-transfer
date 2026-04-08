@@ -1,105 +1,344 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rabbit | Secure Upload</title>
-  <style>
-    :root {
-      --bg: #F4F1EB;
-      --text: #2C2B29;
-      --brand: #B85B43;
-      --brand-hover: #984833;
-      --border: #E0DCD3;
-      --card: #FFFFFF;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-    
-    header { padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg); }
-    header a.logo { text-decoration: none; color: var(--text); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.5px; }
-    header nav a { text-decoration: none; color: var(--text); font-size: 0.9rem; font-weight: 600; border: 1px solid var(--border); padding: 0.5rem 1.2rem; border-radius: 20px; transition: 0.2s; }
-    header nav a:hover { background: var(--text); color: white; border-color: var(--text); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rabbit | Secure Upload</title>
+    <style>
+      :root {
+        --bg: #f4f1eb;
+        --text: #2c2b29;
+        --brand: #b85b43;
+        --brand-hover: #984833;
+        --border: #e0dcd3;
+        --card: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .container { max-width: 680px; margin: 3rem auto; width: 100%; padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; flex: 1; }
-    
-    .header-text { text-align: center; margin-bottom: 1rem; }
-    .header-text h1 { font-family: "Georgia", serif; font-size: 2.2rem; font-weight: 400; color: var(--brand); margin-bottom: 0.5rem; }
-    .header-text p { color: #666; font-size: 0.95rem; }
+      header {
+        padding: 1.5rem 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+      }
+      header a.logo {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 1.2rem;
+        letter-spacing: -0.5px;
+      }
+      header nav a {
+        text-decoration: none;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        padding: 0.5rem 1.2rem;
+        border-radius: 20px;
+        transition: 0.2s;
+      }
+      header nav a:hover {
+        background: var(--text);
+        color: white;
+        border-color: var(--text);
+      }
 
-    .dropzone { background: var(--card); border: 2px dashed var(--brand); border-radius: 12px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.02); margin-bottom: 1rem; }
-    .dropzone:hover, .dropzone.dragover { background: #faf8f5; border-color: var(--brand-hover); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(184, 91, 67, 0.05); }
-    .dropzone svg { color: var(--brand); margin-bottom: 1rem; width: 48px; height: 48px; }
-    .dropzone h3 { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600; }
-    .dropzone p { color: #888; font-size: 0.9rem; }
-    
-    .actions { display: flex; justify-content: center; }
-    .btn { background: var(--brand); color: white; border: none; padding: 1rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: 0.2s; border-radius: 30px; box-shadow: 0 4px 12px rgba(184, 91, 67, 0.25); }
-    .btn:hover:not(:disabled) { background: var(--brand-hover); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(184, 91, 67, 0.3); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+      .container {
+        max-width: 680px;
+        margin: 3rem auto;
+        width: 100%;
+        padding: 0 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        flex: 1;
+      }
 
-    .file-list { display: flex; flex-direction: column; gap: 0.8rem; }
-    .file-item { background: var(--card); border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem; }
-    .file-header { display: flex; justify-content: space-between; align-items: center; }
-    .file-info { display: flex; flex-direction: column; gap: 0.2rem; overflow: hidden; }
-    .file-name { font-weight: 600; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .file-meta { color: #888; font-size: 0.8rem; }
-    .status-badge { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.3rem 0.8rem; border-radius: 12px; background: #eee; color: #555; }
-    .status-badge.staged { background: #f5f5f5; color: #666; }
-    .status-badge.uploading { background: #e3f2fd; color: #1565c0; }
-    .status-badge.complete { background: #e8f5e9; color: #2e7d32; }
-    .status-badge.error { background: #ffebee; color: #c62828; }
-    
-    .progress-container { width: 100%; display: flex; align-items: center; gap: 1rem; }
-    .progress-bar { flex: 1; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
-    .progress-fill { width: 0%; height: 100%; background: var(--brand); transition: width 0.3s ease; }
-    .progress-text { font-size: 0.8rem; font-weight: 600; color: #666; min-width: 40px; text-align: right; }
-    
-    .global-success { display: none; background: #e8f5e9; border: 1px solid #c8e6c9; color: #2e7d32; padding: 1.5rem; border-radius: 8px; text-align: center; animation: fadein 0.5s ease; width: 100%; box-shadow: 0 4px 15px rgba(46,125,50,0.1); }
-    .global-success h4 { margin-bottom: 0.5rem; font-size: 1.1rem; }
-    .global-success p { font-size: 0.95rem; }
-    .global-success a { color: #2e7d32; font-weight: 600; text-decoration: underline; margin-left: 0.5rem; }
-    
-    @keyframes fadein { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
-</head>
-<body>
-  <header>
-    <a href="index.html" class="logo">Rabbit Transfer</a>
-    <nav>
-      <a href="browse.html">Storage Drive ➔</a>
-    </nav>
-  </header>
+      .header-text {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .header-text h1 {
+        font-family: "Georgia", serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        color: var(--brand);
+        margin-bottom: 0.5rem;
+      }
+      .header-text p {
+        color: #666;
+        font-size: 0.95rem;
+      }
 
-  <main class="container">
-    <div class="header-text">
-      <h1>Secure File Upload</h1>
-      <p>Select files or drag and drop to encrypt, chunk, and transfer instantly.</p>
-    </div>
+      .dropzone {
+        background: var(--card);
+        border: 2px dashed var(--brand);
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
+        margin-bottom: 1rem;
+      }
+      .dropzone:hover,
+      .dropzone.dragover {
+        background: #faf8f5;
+        border-color: var(--brand-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(184, 91, 67, 0.05);
+      }
+      .dropzone svg {
+        color: var(--brand);
+        margin-bottom: 1rem;
+        width: 48px;
+        height: 48px;
+      }
+      .dropzone h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+      .dropzone p {
+        color: #888;
+        font-size: 0.9rem;
+      }
 
-    <!-- Global success message (Hidden by default) -->
-    <div class="global-success" id="globalSuccess">
-      <h4>🎉 All files uploaded successfully!</h4>
-      <p>Your items safely reached the server. <a href="browse.html">View Storage Drive ➔</a></p>
-    </div>
+      .actions {
+        display: flex;
+        justify-content: center;
+      }
+      .btn {
+        background: var(--brand);
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: 0.2s;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(184, 91, 67, 0.25);
+      }
+      .btn:hover:not(:disabled) {
+        background: var(--brand-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(184, 91, 67, 0.3);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+      }
 
-    <div class="dropzone" id="dropzone">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-      <h3>Drag & Drop files here</h3>
-      <p>or click to browse from your device</p>
-      <input type="file" id="fileInput" multiple style="display: none" />
-    </div>
-    
-    <!-- Action buttons -->
-    <div class="actions" id="actionContainer" style="display: none;">
-      <button class="btn" id="btnStartAll">START UPLOAD</button>
-    </div>
+      .file-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      .file-item {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 1.2rem;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      .file-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .file-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        overflow: hidden;
+      }
+      .file-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .file-meta {
+        color: #888;
+        font-size: 0.8rem;
+      }
+      .status-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0.3rem 0.8rem;
+        border-radius: 12px;
+        background: #eee;
+        color: #555;
+      }
+      .status-badge.staged {
+        background: #f5f5f5;
+        color: #666;
+      }
+      .status-badge.uploading {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+      .status-badge.complete {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+      .status-badge.error {
+        background: #ffebee;
+        color: #c62828;
+      }
 
-    <div class="file-list" id="fileList">
-      <!-- File items appended here by app.js -->
-    </div>
-  </main>
+      .progress-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .progress-bar {
+        flex: 1;
+        height: 6px;
+        background: #f0f0f0;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        background: var(--brand);
+        transition: width 0.3s ease;
+      }
+      .progress-text {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #666;
+        min-width: 40px;
+        text-align: right;
+      }
 
-  <script type="module" src="./src/app.js"></script>
-</body>
+      .global-success {
+        display: none;
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        color: #2e7d32;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        animation: fadein 0.5s ease;
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(46, 125, 50, 0.1);
+      }
+      .global-success h4 {
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+      }
+      .global-success p {
+        font-size: 0.95rem;
+      }
+      .global-success a {
+        color: #2e7d32;
+        font-weight: 600;
+        text-decoration: underline;
+        margin-left: 0.5rem;
+      }
+
+      @keyframes fadein {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo">Rabbit Transfer</a>
+      <nav>
+        <a href="browse.html">Storage Drive ➔</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <div class="header-text">
+        <h1>Secure File Upload</h1>
+        <p>
+          Select files or drag and drop to encrypt, chunk, and transfer
+          instantly.
+        </p>
+      </div>
+
+      <!-- Global success message (Hidden by default) -->
+      <div class="global-success" id="globalSuccess">
+        <h4>🎉 All files uploaded successfully!</h4>
+        <p>
+          Your items safely reached the server.
+          <a href="browse.html">View Storage Drive ➔</a>
+        </p>
+      </div>
+
+      <div class="dropzone" id="dropzone">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+          ></path>
+        </svg>
+        <h3>Drag & Drop files here</h3>
+        <p>or click to browse from your device</p>
+        <input type="file" id="fileInput" multiple style="display: none" />
+      </div>
+
+      <!-- Action buttons -->
+      <div class="actions" id="actionContainer" style="display: none">
+        <button class="btn" id="btnStartAll">START UPLOAD</button>
+      </div>
+
+      <div class="file-list" id="fileList">
+        <!-- File items appended here by app.js -->
+      </div>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
 </html>
