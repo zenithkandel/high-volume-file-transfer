@@ -163,6 +163,157 @@
       ],
       "status": "uploading",
       "createdAt": "2026-04-08T11:59:29.070Z"
+    },
+    "ecdac316-b5f6-46d3-b440-7bb0809b0336": {
+      "id": "ecdac316-b5f6-46d3-b440-7bb0809b0336",
+      "filename": "[image] - 2888951.png",
+      "mimeType": "image/png",
+      "size": 301749,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.088Z"
+    },
+    "4d972bef-60b8-48d3-933f-a911806daddf": {
+      "id": "4d972bef-60b8-48d3-933f-a911806daddf",
+      "filename": "[image] - 3836479.png",
+      "mimeType": "image/png",
+      "size": 327070,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T12:05:43.101Z"
+    },
+    "f9976f59-5b61-4139-88cf-2a53e6bec1b0": {
+      "id": "f9976f59-5b61-4139-88cf-2a53e6bec1b0",
+      "filename": "[image] - 7223809.png",
+      "mimeType": "image/png",
+      "size": 280674,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.107Z"
+    },
+    "0da7958f-9eef-41fc-bd7c-8a85350cf6f6": {
+      "id": "0da7958f-9eef-41fc-bd7c-8a85350cf6f6",
+      "filename": "[image] - 2487511.png",
+      "mimeType": "image/png",
+      "size": 388379,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.114Z"
+    },
+    "aae8ab26-4ce6-4caa-aa94-000b08af927c": {
+      "id": "aae8ab26-4ce6-4caa-aa94-000b08af927c",
+      "filename": "[image] - 8493345.png",
+      "mimeType": "image/png",
+      "size": 237095,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.120Z"
+    },
+    "e0a1749f-eb44-464d-b402-a3d4becf5fb7": {
+      "id": "e0a1749f-eb44-464d-b402-a3d4becf5fb7",
+      "filename": "[image] - 1645640.png",
+      "mimeType": "image/png",
+      "size": 346040,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.125Z"
+    },
+    "cbfbc68f-483b-4e7c-b29a-22e96bb579ac": {
+      "id": "cbfbc68f-483b-4e7c-b29a-22e96bb579ac",
+      "filename": "[image] - 7522786.png",
+      "mimeType": "image/png",
+      "size": 311910,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T12:05:43.133Z"
+    },
+    "493b76e4-7408-4bc9-b133-4ae783e80c6f": {
+      "id": "493b76e4-7408-4bc9-b133-4ae783e80c6f",
+      "filename": "[image] - 6396037.png",
+      "mimeType": "image/png",
+      "size": 333232,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.140Z"
+    },
+    "0746c13c-4bb0-4d1f-863d-46610ad35352": {
+      "id": "0746c13c-4bb0-4d1f-863d-46610ad35352",
+      "filename": "[image] - 5180058.png",
+      "mimeType": "image/png",
+      "size": 350086,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.147Z"
+    },
+    "09722da4-d1e0-4ae2-95f4-59606b76901b": {
+      "id": "09722da4-d1e0-4ae2-95f4-59606b76901b",
+      "filename": "[image] - 309860.png",
+      "mimeType": "image/png",
+      "size": 309230,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.154Z"
+    },
+    "25dad6d5-a88b-46d1-afd5-5f85d059c85e": {
+      "id": "25dad6d5-a88b-46d1-afd5-5f85d059c85e",
+      "filename": "[image] - 6617402.png",
+      "mimeType": "image/png",
+      "size": 364045,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.161Z"
+    },
+    "741e414f-168f-4d43-9d2d-6b805821997c": {
+      "id": "741e414f-168f-4d43-9d2d-6b805821997c",
+      "filename": "Circular Motion (1).pdf",
+      "mimeType": "application/pdf",
+      "size": 1012675,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "complete",
+      "createdAt": "2026-04-08T12:05:43.165Z",
+      "finalPath": "C:\\xampp\\htdocs\\codes\\high-volume-file-transfer\\backend\\uploads\\Circular Motion (1)_741e4.pdf"
+    },
+    "8e8ca7cc-6be7-4dd4-ae25-850b654dbc53": {
+      "id": "8e8ca7cc-6be7-4dd4-ae25-850b654dbc53",
+      "filename": "[image] - 3998624.jpg",
+      "mimeType": "image/jpeg",
+      "size": 81486,
+      "chunksCount": 1,
+      "uploadedChunks": [],
+      "status": "pending",
+      "createdAt": "2026-04-08T12:05:43.171Z"
+    },
+    "1d4898c6-2a8d-4ded-9022-7c7f83d8a661": {
+      "id": "1d4898c6-2a8d-4ded-9022-7c7f83d8a661",
+      "filename": "AssetRipper_win_x64.zip",
+      "mimeType": "application/x-zip-compressed",
+      "size": 41441532,
+      "chunksCount": 8,
+      "uploadedChunks": [
+        3,
+        6,
+        7
+      ],
+      "status": "uploading",
+      "createdAt": "2026-04-08T12:06:03.573Z"
     }
   }
 }
