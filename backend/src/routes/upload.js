@@ -28,6 +28,26 @@ async function uploadRoutes(fastify, options) {
         return reply.send(stream);
     });
 
+    fastify.delete('/file/:fileId', async (request, reply) => {
+        const { fileId } = request.params;
+        const db = readDb();
+        const fileRecord = db.files[fileId];
+        if (!fileRecord) return reply.code(404).send({ error: 'Not found' });
+
+        if (fileRecord.finalPath && fs.existsSync(fileRecord.finalPath)) {
+            fs.unlinkSync(fileRecord.finalPath);
+        }
+
+        const tempPath = path.join(getTempPath(), fileId);
+        if (fs.existsSync(tempPath)) {
+            fs.rmSync(tempPath, { recursive: true, force: true });
+        }
+
+        delete db.files[fileId];
+        writeDb(db);
+        reply.send({ success: true });
+    });
+
     fastify.post('/zip', async (request, reply) => {
         const { fileIds } = request.body;
         if (!fileIds || !fileIds.length) return reply.code(400).send({ error: 'No files' });

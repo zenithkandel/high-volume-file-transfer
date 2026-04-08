@@ -40,12 +40,50 @@ function renderFiles() {
       <td style="color: #666; font-size: 0.85rem;">${dateStr}</td>
       <td class="action-cell">
         <a href="http://localhost:3000/api/v1/upload/download/${f.id}" class="dl-link" download>DOWNLOAD ↓</a>
+        <button style="margin-left: 10px; color: ${f.deleting ? '#aaa' : '#c62828'}; background: none; border: none; cursor: ${f.deleting ? 'default' : 'pointer'}; font-weight: 600; font-size: 0.85rem;" class="delete-btn" data-id="${f.id}" ${f.deleting ? 'disabled' : ''}>${f.deleting ? 'DELETING...' : 'DELETE âœ—'}</button>
       </td>
     `;
         tbody.appendChild(tr);
     });
 
     attachCheckboxListeners();
+    attachDeleteListeners();
+}
+
+function attachDeleteListeners() {
+    const delBtns = document.querySelectorAll('.delete-btn');
+    delBtns.forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const id = e.target.getAttribute('data-id');
+            if (confirm('Are you sure you want to delete this file?')) {
+                // Optimistically update UI
+                const fileIndex = files.findIndex(f => f.id === id);
+                if (fileIndex !== -1) {
+                    files[fileIndex].deleting = true;
+                    renderFiles(); // Re-render to show "DELETING..." state
+                }
+
+                try {
+                    const res = await fetch(`http://localhost:3000/api/v1/upload/file/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (res.ok) {
+                        files = files.filter(f => f.id !== id);
+                        renderFiles();
+                    } else {
+                        alert('Could not delete file.');
+                        if (fileIndex !== -1) files[fileIndex].deleting = false;
+                        renderFiles();
+                    }
+                } catch (error) {
+                    console.error('Delete error', error);
+                    alert('Error deleting file.');
+                    if (fileIndex !== -1) files[fileIndex].deleting = false;
+                    renderFiles();
+                }
+            }
+        });
+    });
 }
 
 function attachCheckboxListeners() {
