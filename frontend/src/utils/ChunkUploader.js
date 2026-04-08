@@ -156,6 +156,13 @@ class ChunkUploader {
                 body: formData
             });
 
+            if (res.status === 404) {
+                // Backend lost the fileId, reset the state
+                localStorage.removeItem(`upload_state_${this.file.name}`);
+                this.fileId = null;
+                throw new Error("Backend lost initialization data (404).");
+            }
+
             if (!res.ok) throw new Error(`Upload POST failed: ${res.status}`);
 
             this.uploadedChunks.add(partNumber);
@@ -200,6 +207,17 @@ class ChunkUploader {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ fileId: this.fileId })
             });
+
+            if (res.status === 404) {
+                // Backend lost this fileId. Clear state and retry from scratch.
+                localStorage.removeItem(`upload_state_${this.file.name}`);
+                this.fileId = null;
+                this.uploadedChunks.clear();
+                this.status = 'idle';
+                this.start();
+                return;
+            }
+
             if (!res.ok) throw new Error('Completion Failed');
 
             localStorage.removeItem(`upload_state_${this.file.name}`);
