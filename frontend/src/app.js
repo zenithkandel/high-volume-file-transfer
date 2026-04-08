@@ -127,7 +127,7 @@ function checkAllComplete() {
         if (uploadQueue.every(u => u.status === 'complete')) {
             globalSuccess.style.display = 'block';
             actionContainer.style.display = 'none';
-            dropzone.style.display = 'none'; // Optional: hide dropzone to emphasize completion
+            // dropzone.style.display = 'none'; // Keep dropzone if they want to upload more
         }
     }
 }
