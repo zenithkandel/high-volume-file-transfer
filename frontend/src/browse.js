@@ -42,7 +42,7 @@ function renderFiles() {
       <td style="color: #666;">${sizeMb} MB</td>
       <td style="color: #666; font-size: 0.85rem;">${dateStr}</td>
       <td class="action-cell">
-        <a href="/api/v1/upload/download/${f.id}" class="dl-link" download>DOWNLOAD</a>
+        <a href="${API_BASE}/download/${f.id}" class="dl-link" download>DOWNLOAD</a>
         <button style="margin-left: 10px; color: ${f.deleting ? '#aaa' : '#c62828'}; background: none; border: none; cursor: ${f.deleting ? 'default' : 'pointer'}; font-weight: 600; font-size: 0.85rem;" class="delete-btn" data-id="${f.id}" ${f.deleting ? 'disabled' : ''}>${f.deleting ? 'DELETING...' : 'DELETE'}</button>
       </td>
     `;
@@ -67,7 +67,7 @@ function attachDeleteListeners() {
                 }
 
                 try {
-                    const res = await fetch(`/api/v1/upload/file/${id}`, {
+                    const res = await fetch(`${API_BASE}/file/${id}`, {
                         method: 'DELETE'
                     });
                     if (res.ok) {
@@ -120,7 +120,7 @@ btnDownloadZip.addEventListener('click', async () => {
     btnDownloadZip.disabled = true;
 
     try {
-        const res = await fetch('/api/v1/upload/zip', {
+        const res = await fetch(`${API_BASE}/zip`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fileIds: selectedIds })
@@ -167,7 +167,7 @@ btnDeleteSelected.addEventListener('click', async () => {
 
     try {
         await Promise.all(selectedIds.map(id =>
-            fetch(`/api/v1/upload/file/${id}`, { method: 'DELETE' })
+            fetch(`${API_BASE}/file/${id}`, { method: 'DELETE' })
         ));
 
         files = files.filter(f => !selectedIds.includes(f.id));
