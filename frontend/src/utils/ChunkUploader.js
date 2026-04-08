@@ -105,7 +105,7 @@ class ChunkUploader {
     }
 
     async initBackend() {
-        const res = await fetch('http://localhost:3000/api/v1/upload/init', {
+        const res = await fetch('/api/v1/upload/init', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -151,7 +151,7 @@ class ChunkUploader {
             formData.append('partNumber', partNumber);
             formData.append('chunk', chunkData, this.file.name);
 
-            const res = await fetch('http://localhost:3000/api/v1/upload/chunk', {
+            const res = await fetch('/api/v1/upload/chunk', {
                 method: 'POST',
                 body: formData
             });
@@ -202,7 +202,7 @@ class ChunkUploader {
     async completeUpload() {
         this.status = 'complete';
         try {
-            const res = await fetch('http://localhost:3000/api/v1/upload/complete', {
+            const res = await fetch('/api/v1/upload/complete', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ fileId: this.fileId })
