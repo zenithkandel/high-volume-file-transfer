@@ -102,7 +102,7 @@ function updateError(id, err) {
 }
 
 function markComplete(id, key) {
-    const safeId = Math.floor(id);
+    const safeId = id;
     const badge = document.getElementById('badge-' + safeId);
     const fill = document.getElementById('prog-' + safeId);
     const text = document.getElementById('pct-' + safeId);
