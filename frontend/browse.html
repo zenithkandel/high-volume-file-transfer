@@ -151,9 +151,20 @@
     <div class="container">
       <div class="toolbar">
         <h2>Storage Drive</h2>
-        <button class="btn" id="btnDownloadZip" disabled>
-          DOWNLOAD SELECTED AS ZIP
-        </button>
+        <div style="display: flex; gap: 1rem">
+          <button class="btn" id="btnDownloadZip" disabled>
+            DOWNLOAD SELECTED AS ZIP
+          </button>
+          <button
+            class="btn"
+            id="btnDeleteSelected"
+            style="background: #c62828"
+            title="Delete Selected"
+            disabled
+          >
+            DELETE SELECTED
+          </button>
+        </div>
       </div>
 
       <table id="fileTable">

@@ -1,6 +1,7 @@
 const tbody = document.getElementById('tbody');
 const checkAll = document.getElementById('checkAll');
 const btnDownloadZip = document.getElementById('btnDownloadZip');
+const btnDeleteSelected = document.getElementById('btnDeleteSelected');
 
 let files = [];
 
@@ -91,18 +92,19 @@ function attachCheckboxListeners() {
 
     checkAll.addEventListener('change', (e) => {
         cbs.forEach(cb => cb.checked = e.target.checked);
-        updateZipButton();
+        updateActionButtons();
     });
 
     cbs.forEach(cb => cb.addEventListener('change', () => {
-        updateZipButton();
+        updateActionButtons();
     }));
 }
 
-function updateZipButton() {
+function updateActionButtons() {
     const cbs = document.querySelectorAll('.file-cb');
     const anyChecked = Array.from(cbs).some(cb => cb.checked);
     btnDownloadZip.disabled = !anyChecked;
+    btnDeleteSelected.disabled = !anyChecked;
 }
 
 btnDownloadZip.addEventListener('click', async () => {
@@ -140,9 +142,41 @@ btnDownloadZip.addEventListener('click', async () => {
         alert('Zip failed locally');
     } finally {
         btnDownloadZip.innerText = 'DOWNLOAD SELECTED AS ZIP';
-        btnDownloadZip.disabled = false;
         checkAll.checked = false;
         document.querySelectorAll('.file-cb').forEach(cb => cb.checked = false);
+        updateActionButtons();
+    }
+});
+
+btnDeleteSelected.addEventListener('click', async () => {
+    const selectedIds = Array.from(document.querySelectorAll('.file-cb'))
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+    if (selectedIds.length === 0) return;
+
+    if (!confirm(`Are you sure you want to delete ${selectedIds.length} selected files?`)) {
+        return;
+    }
+
+    btnDeleteSelected.innerText = 'DELETING...';
+    btnDeleteSelected.disabled = true;
+    btnDownloadZip.disabled = true;
+
+    try {
+        await Promise.all(selectedIds.map(id =>
+            fetch(`http://localhost:3000/api/v1/upload/file/${id}`, { method: 'DELETE' })
+        ));
+
+        files = files.filter(f => !selectedIds.includes(f.id));
+    } catch (e) {
+        console.error(e);
+        alert('Error deleting some files.');
+    } finally {
+        btnDeleteSelected.innerText = 'DELETE SELECTED';
+        checkAll.checked = false;
+        renderFiles();
+        updateActionButtons();
     }
 });
 
