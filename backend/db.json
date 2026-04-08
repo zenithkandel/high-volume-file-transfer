@@ -1,3 +1,18 @@
 {
-  "files": {}
+  "files": {
+    "24ef3887-02c9-4f6e-8a77-dd65548d27e1": {
+      "id": "24ef3887-02c9-4f6e-8a77-dd65548d27e1",
+      "filename": "wabt-1.0.40-windows-x64.tar.gz",
+      "mimeType": "application/x-gzip",
+      "size": 5424034,
+      "chunksCount": 2,
+      "uploadedChunks": [
+        1,
+        2
+      ],
+      "status": "complete",
+      "createdAt": "2026-04-08T11:44:40.681Z",
+      "finalPath": "C:\\xampp\\htdocs\\codes\\high-volume-file-transfer\\backend\\uploads\\wabt-1.0.40-windows-x64.tar_24ef3.gz"
+    }
+  }
 }

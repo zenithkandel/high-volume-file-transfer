@@ -117,8 +117,6 @@ class ChunkUploader {
         if (!res.ok) throw new Error('Init Failed');
         const data = await res.json();
         this.fileId = data.fileId;
-        this.uploadId = data.uploadId;
-        this.objectKey = data.key;
         this.saveState();
     }
 
@@ -145,18 +143,18 @@ class ChunkUploader {
         const chunkData = this.file.slice(start, end);
 
         try {
-// Use FormData mapping for fastify-multipart
-      const formData = new FormData();
-      formData.append('fileId', this.fileId);
-      formData.append('partNumber', partNumber);
-      formData.append('chunk', chunkData, this.file.name);
+            // Use FormData mapping for fastify-multipart
+            const formData = new FormData();
+            formData.append('fileId', this.fileId);
+            formData.append('partNumber', partNumber);
+            formData.append('chunk', chunkData, this.file.name);
 
-      const res = await fetch('http://localhost:3000/api/v1/upload/chunk', {
-        method: 'POST',
-        body: formData
-      });
+            const res = await fetch('http://localhost:3000/api/v1/upload/chunk', {
+                method: 'POST',
+                body: formData
+            });
 
-      if (!res.ok) throw new Error(`Upload POST failed: ${res.status}`);
+            if (!res.ok) throw new Error(`Upload POST failed: ${res.status}`);
 
             this.uploadedChunks.add(partNumber);
             this.saveState();
