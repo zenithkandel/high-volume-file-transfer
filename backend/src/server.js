@@ -1,5 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') }); // Load optional parent directory .env
+require('dotenv').config(); // Fallback to local ./backend/.env if it exists
+
 const Fastify = require('fastify');
 const cors = require('@fastify/cors');
 const multipart = require('@fastify/multipart');
