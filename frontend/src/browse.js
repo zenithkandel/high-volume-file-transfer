@@ -39,8 +39,8 @@ function renderFiles() {
       <td style="color: #666;">${sizeMb} MB</td>
       <td style="color: #666; font-size: 0.85rem;">${dateStr}</td>
       <td class="action-cell">
-        <a href="http://localhost:3000/api/v1/upload/download/${f.id}" class="dl-link" download>DOWNLOAD ↓</a>
-        <button style="margin-left: 10px; color: ${f.deleting ? '#aaa' : '#c62828'}; background: none; border: none; cursor: ${f.deleting ? 'default' : 'pointer'}; font-weight: 600; font-size: 0.85rem;" class="delete-btn" data-id="${f.id}" ${f.deleting ? 'disabled' : ''}>${f.deleting ? 'DELETING...' : 'DELETE âœ—'}</button>
+        <a href="http://localhost:3000/api/v1/upload/download/${f.id}" class="dl-link" download>DOWNLOAD</a>
+        <button style="margin-left: 10px; color: ${f.deleting ? '#aaa' : '#c62828'}; background: none; border: none; cursor: ${f.deleting ? 'default' : 'pointer'}; font-weight: 600; font-size: 0.85rem;" class="delete-btn" data-id="${f.id}" ${f.deleting ? 'disabled' : ''}>${f.deleting ? 'DELETING...' : 'DELETE'}</button>
       </td>
     `;
         tbody.appendChild(tr);
