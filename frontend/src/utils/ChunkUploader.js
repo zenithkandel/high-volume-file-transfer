@@ -2,6 +2,8 @@
  * Production-ready File Chunk Uploader.
  * Features: Concurrent uploading, retry, pause/resume, resuming after disconnect, iOS strict background handling
  */
+const API_BASE = window.location.pathname.replace(/\/[^/]*\.html$/, '').replace(/\/$/, '') + '/api/v1/upload';
+
 class ChunkUploader {
     constructor(file, options = {}) {
         this.file = file;
@@ -105,7 +107,7 @@ class ChunkUploader {
     }
 
     async initBackend() {
-        const res = await fetch('/api/v1/upload/init', {
+        const res = await fetch(`${API_BASE}/init`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -151,7 +153,7 @@ class ChunkUploader {
             formData.append('partNumber', partNumber);
             formData.append('chunk', chunkData, this.file.name);
 
-            const res = await fetch('/api/v1/upload/chunk', {
+            const res = await fetch(`${API_BASE}/chunk`, {
                 method: 'POST',
                 body: formData
             });
@@ -202,7 +204,7 @@ class ChunkUploader {
     async completeUpload() {
         this.status = 'complete';
         try {
-            const res = await fetch('/api/v1/upload/complete', {
+            const res = await fetch(`${API_BASE}/complete`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ fileId: this.fileId })
