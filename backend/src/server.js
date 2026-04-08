@@ -44,7 +44,14 @@ server.get('/health', async (request, reply) => {
 const start = async () => {
   try {
     const port = process.env.PORT || 3000;
-    await server.listen({ port, host: '0.0.0.0' });
+
+    // cPanel (Phusion Passenger) might pass a named pipe (string) instead of a numeric port
+    if (typeof port === 'string' && isNaN(Number(port))) {
+      await server.listen({ path: port });
+    } else {
+      await server.listen({ port: Number(port), host: '0.0.0.0' });
+    }
+
     server.log.info(`Server listening on ${port}`);
   } catch (err) {
     server.log.error(err);
