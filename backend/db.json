@@ -1,3 +1,30 @@
 {
-  "files": {}
+  "files": {
+    "231486c0-f677-49b1-9549-14349beecc5c": {
+      "id": "231486c0-f677-49b1-9549-14349beecc5c",
+      "filename": "[image] - 2888951.png",
+      "mimeType": "image/png",
+      "size": 301749,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "complete",
+      "createdAt": "2026-04-08T12:21:19.660Z",
+      "finalPath": "C:\\xampp\\htdocs\\codes\\high-volume-file-transfer\\backend\\uploads\\[image] - 2888951_23148.png"
+    },
+    "9882506f-95d1-43c7-bfeb-029104961663": {
+      "id": "9882506f-95d1-43c7-bfeb-029104961663",
+      "filename": "[image] - 7223809.png",
+      "mimeType": "image/png",
+      "size": 280674,
+      "chunksCount": 1,
+      "uploadedChunks": [
+        1
+      ],
+      "status": "complete",
+      "createdAt": "2026-04-08T12:21:19.671Z",
+      "finalPath": "C:\\xampp\\htdocs\\codes\\high-volume-file-transfer\\backend\\uploads\\[image] - 7223809_98825.png"
+    }
+  }
 }
