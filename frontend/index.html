@@ -1,37 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Production File Transfer</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 2rem; background: #f4f7f6; }
-    .container { max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    #dropzone { border: 2px dashed #007bff; border-radius: 4px; padding: 3rem; text-align: center; color: #555; transition: background 0.3s; cursor: pointer; }
-    #dropzone.dragover { background: #e9f5ff; }
-    .progress-bar { width: 100%; background: #eee; border-radius: 4px; overflow: hidden; margin-top: 1rem; display: none; }
-    .progress-fill { height: 10px; background: #28a745; width: 0%; transition: width 0.2s; }
-    .controls { display: flex; gap: 10px; margin-top: 10px; }
-    button { padding: 8px 16px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
-    button:disabled { background: #ccc; cursor: not-allowed; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Upload Large Files</h2>
-    <div id="dropzone">Drag & Drop files here, or click to browse.</div>
-    <input type="file" id="fileInput" style="display: none" />
-    
-    <div id="uploadStatus" style="margin-top: 1rem;"></div>
-    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
-    
-    <div class="controls">
-      <button id="btnStart" disabled>Start</button>
-      <button id="btnPause" disabled>Pause</button>
-      <button id="btnResume" disabled>Resume</button>
-    </div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Production File Transfer</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        padding: 2rem;
+        background: #f4f7f6;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      #dropzone {
+        border: 2px dashed #007bff;
+        border-radius: 4px;
+        padding: 3rem;
+        text-align: center;
+        color: #555;
+        transition: background 0.3s;
+        cursor: pointer;
+      }
+      #dropzone.dragover {
+        background: #e9f5ff;
+      }
+      .progress-bar {
+        width: 100%;
+        background: #eee;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 1rem;
+        display: none;
+      }
+      .progress-fill {
+        height: 10px;
+        background: #28a745;
+        width: 0%;
+        transition: width 0.2s;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      button {
+        padding: 8px 16px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Upload Large Files</h2>
+      <div id="dropzone">Drag & Drop files here, or click to browse.</div>
+      <input type="file" id="fileInput" style="display: none" />
 
-  <script type="module" src="./src/app.js"></script>
-</body>
+      <div id="uploadStatus" style="margin-top: 1rem"></div>
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="controls">
+        <button id="btnStart" disabled>Start</button>
+        <button id="btnPause" disabled>Pause</button>
+        <button id="btnResume" disabled>Resume</button>
+      </div>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
 </html>
