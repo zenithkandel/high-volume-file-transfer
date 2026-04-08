@@ -43,27 +43,26 @@ server.addHook('onRequest', (request, reply, done) => {
   done();
 });
 
-// Force basePath to '/jas/' because cPanel might have NODE_ENV set to 'development' instead of 'production'
-const basePath = '/jas/';
+// Force basePath to '/jas' for this specific cPanel environment.
+// LiteSpeed/Passenger is NOT stripping the Application URL on this host.
+const basePath = '/jas';
 
+// Register static files to both /jas/ and /jas (with wildcard support)
 server.register(fastifyStatic, {
   root: path.join(__dirname, '../../frontend'),
-  prefix: basePath,
-  list: true // Optional: helps debug if files are there
+  prefix: `${basePath}/`,
 });
 
-server.register(uploadRoutes, { prefix: `${basePath}api/v1/upload`.replace('//', '/') });
+server.register(uploadRoutes, { prefix: `${basePath}/api/v1/upload` });
 
-server.get(`${basePath}health`.replace('//', '/'), async (request, reply) => {
+server.get(`${basePath}/health`, async (request, reply) => {
   return { status: 'ok', time: new Date() };
 });
 
-// Catch-all to redirect root to the base path if needed
-if (basePath !== '/') {
-  server.get('/', async (request, reply) => {
-    reply.redirect(basePath);
-  });
-}
+// Provide a redirect just in case someone hits the root without the slash
+server.get(basePath, async (request, reply) => {
+  reply.redirect(`${basePath}/`);
+});
 
 const start = async () => {
   try {
