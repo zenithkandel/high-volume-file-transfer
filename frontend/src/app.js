@@ -74,7 +74,7 @@ function renderFileQueue() {
 }
 
 function updateProgress(id, pct) {
-    const safeId = Math.floor(id);
+    const safeId = id;
     const idx = uploadQueue.findIndex(u => u.id === id);
     if (idx !== -1) uploadQueue[idx].percent = pct;
 
@@ -91,7 +91,7 @@ function updateProgress(id, pct) {
 }
 
 function updateError(id, err) {
-    const safeId = Math.floor(id);
+    const safeId = id;
     const badge = document.getElementById('badge-' + safeId);
     if (badge) {
         badge.innerText = 'Error';
